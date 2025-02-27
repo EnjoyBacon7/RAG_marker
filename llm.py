@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 sys_prompt = """
+
 Voici des documents pertinents pour la question suivante. Veuillez répondre à la question en utilisant les informations fournies dans les documents.
 
 Documents: {documents}

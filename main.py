@@ -1,20 +1,36 @@
-import os
-
 import db
 import conversion
 import llm
 
+import os
+import time
+
+import logging
 
 
-# with open("output/DTA-2004_/DTA-2004_.md") as f:
-#     md = f.read()
+def main():
+    chroma_client = db.init_db()
+    collection = chroma_client.get_collection('documents')
 
-#     db.store_document(md)
+    logging.basicConfig(level=logging.INFO)
 
-#     answer = db.query("Quelle est l'addresse du DTA?")
-#     assistant = llm.query_llm(answer, "Quelle est l'addresse du DTA?")
-#     print(assistant)
+    # Convert all files to markdown
+    conversion.chunk_convert("data")
+
+    # Store all documents in the database
+    files = os.listdir("./output")
+    for file in files:
+        with open(os.path.join("./output", file, file + ".md"), "r") as f:
+            text = f.read()
+            db.store_document(text, collection)
+
+    # # Query the database
+    # query = "What is the purpose of the document?"
+    # results = db.query(query, collection)
+    # print(results)
 
 
-render = conversion.convert("2024-07_rapport-propositions-pour-2025_assurance-maladie.pdf")
-conversion.save_md(render, "2024-07_rapport-propositions-pour-2025_assurance-maladie")
+if __name__ == "__main__":
+    start = time.time()
+    main()
+    print("Execution time:", time.time() - start)
