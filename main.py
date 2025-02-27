@@ -7,10 +7,12 @@ import time
 
 import logging
 
-
 def main():
     chroma_client = db.init_db()
-    collection = chroma_client.get_collection('documents')
+    try:
+        collection = chroma_client.get_collection('documents')
+    except:
+        collection = chroma_client.create_collection('documents')
 
     logging.basicConfig(level=logging.INFO)
 
