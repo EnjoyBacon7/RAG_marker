@@ -1,19 +1,33 @@
 from marker.converters.pdf import PdfConverter
 from marker.models import create_model_dict
+from marker.config.parser import ConfigParser
 
 
 import os
 
 def convert(file):
 
+    config = {
+        
+    }
+    config_parser = ConfigParser(config)
+
     converter = PdfConverter(
         artifact_dict=create_model_dict(),
+        config=config_parser.generate_config_dict(),
+        processor_list=config_parser.get_processors(),
+        renderer=config_parser.get_renderer(),
+        llm_service=config_parser.get_llm_service()
     )
 
     rendered = converter(file)
     return rendered
 
 def chunk_convert(data_path):
+    cmd = f"marker '{data_path}' --output_dir ./output --converter_cls marker.converters.pdf.PdfConverter --workers 2"
+    os.system(cmd)
+
+def chunk_convert_homemade(data_path):
 
     converter = PdfConverter(
         artifact_dict=create_model_dict(),
