@@ -14,8 +14,16 @@ def convert(file):
     return rendered
 
 def chunk_convert(data_path):
-    cmd = f"marker '{data_path}' --output_dir ./output --converter_cls marker.converters.pdf.PdfConverter --workers 2"
-    os.system(cmd)
+
+    converter = PdfConverter(
+        artifact_dict=create_model_dict(),
+    )
+
+    for root, dirs, files in os.walk(data_path):
+        for file in files:
+            if file.endswith(".pdf"):
+                rendered = converter(os.path.join(root, file))
+                save_md(rendered, file)
 
 def save_md(render, filename):
     os.makedirs("output", exist_ok=True)

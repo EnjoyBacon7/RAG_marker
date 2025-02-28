@@ -22,7 +22,9 @@ def main():
     )
 
     # Convert all files to markdown
+    logging.info("Converting files to markdown")
     conversion.chunk_convert("data")
+    logging.info("Finished converting files to markdown")
 
     # Store all documents in the database
     files = os.listdir("./output")
