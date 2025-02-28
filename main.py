@@ -14,7 +14,12 @@ def main():
     except:
         collection = chroma_client.create_collection('documents')
 
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(
+        filename='log.log',
+        filemode='w',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        level=logging.DEBUG
+    )
 
     # Convert all files to markdown
     conversion.chunk_convert("data")
@@ -26,10 +31,6 @@ def main():
             text = f.read()
             db.store_document(text, collection)
 
-    # # Query the database
-    # query = "What is the purpose of the document?"
-    # results = db.query(query, collection)
-    # print(results)
 
 
 if __name__ == "__main__":

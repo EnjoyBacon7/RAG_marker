@@ -5,15 +5,16 @@ from marker.models import create_model_dict
 import os
 
 def convert(file):
+
     converter = PdfConverter(
         artifact_dict=create_model_dict(),
     )
 
-    rendered = converter("./data/" + file)
+    rendered = converter(file)
     return rendered
 
 def chunk_convert(data_path):
-    cmd = f"marker '{data_path}' --output_dir ./output --converter_cls marker.converters.pdf.PdfConverter --workers 8"
+    cmd = f"marker '{data_path}' --output_dir ./output --converter_cls marker.converters.pdf.PdfConverter --workers 2"
     os.system(cmd)
 
 def save_md(render, filename):

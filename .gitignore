@@ -4,3 +4,6 @@ output/
 __pycache__/
 chromadb/
 .env
+data_immo/
+*.log
+.DS_Store
